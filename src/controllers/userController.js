@@ -1,19 +1,19 @@
-const userService = require('../services/userService');
+const userModel = require('../models/UserModel');
 
-// Controlador para listar usuários
-const listUsers = (req, res) => {
+// Função para listar usuários
+const listUsers = async (req, res) => {
     try {
-        const users = userService.listUsers();
+        const users = await userModel.getAllUsers();
         res.status(200).json(users);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 };
 
-// Controlador para obter um usuário por ID
-const getUserById = (req, res) => {
+// Função para obter um usuário por ID
+const getUserById = async (req, res) => {
     try {
-        const user = userService.getUserById(parseInt(req.params.id));
+        const user = await userModel.getUserById(parseInt(req.params.id));
         if (!user) return res.status(404).json({ error: 'Usuário não encontrado.' });
         res.status(200).json(user);
     } catch (error) {
@@ -21,30 +21,30 @@ const getUserById = (req, res) => {
     }
 };
 
-// Controlador para criar um usuário
-const createUser = (req, res) => {
+// Função para criar um usuário
+const createUser = async (req, res) => {
     try {
-        const newUser = userService.createUser(req.body);
+        const newUser = await userModel.createUser(req.body);
         res.status(201).json(newUser);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 };
 
-// Controlador para atualizar um usuário
-const updateUser = (req, res) => {
+// Função para atualizar um usuário
+const updateUser = async (req, res) => {
     try {
-        const updatedUser = userService.updateUser(parseInt(req.params.id), req.body);
+        const updatedUser = await userModel.updateUser(parseInt(req.params.id), req.body);
         res.status(200).json(updatedUser);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 };
 
-// Controlador para deletar um usuário
-const deleteUser = (req, res) => {
+// Função para deletar um usuário
+const deleteUser = async (req, res) => {
     try {
-        userService.deleteUser(parseInt(req.params.id));
+        await userModel.deleteUser(parseInt(req.params.id));
         res.status(204).send();
     } catch (error) {
         res.status(500).json({ error: error.message });
